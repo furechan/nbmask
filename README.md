@@ -2,7 +2,7 @@
 
 Simple ipython extension to mask the username or other sensitive data
 from the ipython notebook outputs.  It may be useful when printing
-or displaying sensitive information in example notebooks.
+or displaying sensitive information in public notebooks.
 
 ## Usage
 
