@@ -1,4 +1,4 @@
-# IPython extension to mask sensitive data from cell outputs
+# IPython extension to mask sensitive data
 
 Simple ipython extension to mask the username or other sensitive data
 from the ipython notebook outputs.  It may be useful when printing
