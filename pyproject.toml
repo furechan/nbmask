@@ -1,0 +1,23 @@
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project]
+name = "nbmask"
+version = "0.0.1"
+requires-python = ">=3.8"
+description = "IPython extension to mask sensitive data"
+urls = { homepage = "https://github.com/furechan/nbmask" }
+authors = [ { name = "furechan", email = "furechan@xsmail.com"} ]
+keywords = ["ipython", "extension", "privacy"]
+license = { file = "LICENSE.txt" }
+dependencies = [ ]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3"
+]
+
+[tool.hatch.build]
+dev-mode-dirs = ["src"]
+sources = ["src"]
+include = ["src/*.py"]
