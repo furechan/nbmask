@@ -82,3 +82,8 @@ You can install the current version of this package with pip
 ```console
 python -mpip install git+https://github.com/furechan/nbmask.git
 ```
+
+## Changelog
+
+### 0.0.3
+- Masking pattern is cached

@@ -5,6 +5,8 @@ import os
 import sys
 import shlex
 
+from functools import lru_cache
+
 from pathlib import Path
 
 from IPython.display import display
@@ -16,7 +18,8 @@ from IPython.core.getipython import get_ipython
 SECRETS = set()
 
 
-def masked_string(text: str):
+@lru_cache
+def get_pattern():
     """ Utility function to remove username from string """
 
     patterns = [re.escape(secret) for secret in SECRETS]
@@ -26,7 +29,15 @@ def masked_string(text: str):
     if username is not None:
         patterns.append(r"\b%s\b" % re.escape(username))
 
-    pattern = "|".join(patterns)
+    result = "|".join(patterns)
+
+    return result
+
+
+def masked_string(text: str):
+    """ Utility function to remove username from string """
+
+    pattern = get_pattern()
 
     return re.sub(pattern, "...", text, re.IGNORECASE)
 
@@ -46,8 +57,9 @@ class NBMaskMagics(Magics):
     def nbmask(self, line, cell=None):
         """ line magic to mask outputs """
 
-        items = shlex.split(line)
-        SECRETS.update(items)
+        args = shlex.split(line)
+        SECRETS.update(args)
+        get_pattern.cache_clear()
 
     @cell_magic
     def masked(self, line, cell=None):
