@@ -1,8 +1,10 @@
 # IPython extension to mask sensitive data
 
 Simple ipython extension to mask the username or other sensitive data
-from the ipython notebook outputs.  It may be useful when printing
+from notebook cell outputs.  It may be useful when printing
 or displaying sensitive information in public notebooks.
+The extension modifies the ipython display system to mask textual outputs
+from printing, logging and the native display system.
 
 ## Usage
 
@@ -12,22 +14,24 @@ extension will mask the username.
 
 ```python
 import os
+import logging
 
 from pathlib import Path
 
 from IPython.display import display
 
+logging.basicConfig(level="DEBUG", force=True)
+
 %load_ext nbmask
 
 username = os.getenv('USER')
-message = f"My name is {username}!"
+
+print("My name is {username}!")
+# >>> My name is ...!
+
 documents = Path(f"/Users/{username}/Documents")
-
-display(username) # >>> '...'
-
-display(message) # >>> 'My name is ...!'
-
-display(documents) # >>> PosixPath('/Users/.../Documents')
+print(documents)
+# >>> PosixPath('/Users/.../Documents')
 ```
 
 
@@ -40,50 +44,36 @@ TOKEN = my_secret_token()
 
 %nbmask "$TOKEN"
 
-credentials = dict(token=TOKEN)
+credentials = dict(user=username, token=TOKEN)
 
-credentials # >>> {'token': '...'}
+print(credentials)
+# >>> {'user': '...', 'token': '...'}
+
+logging.debug("Token is %s", TOKEN)
+# >>> DEBUG:root:Token is ...
+
 ```
 
-To mask `print` or `pprint` outputs you need to explicitely use the `%%masked` cell magic
-for any cell that prints sensitive data.
-
-```python
-%%masked
-
-message = f"My name is {username}!"
-
-print(message) # >>> My name is ...!
-```
-
-
-The `%%masked` cell magic can also be used to mask logging outputs.
-
-```python
-%%masked
-
-import logging
-
-logging.basicConfig(level="DEBUG", force=True)
-
-logging.debug("Used token %s", TOKEN) # >>> DEBUG:root:Used token ...
-```
+To mask `print` or `pprint` outputs the extension include a `%%masked` cell magic
+but is is no longer and it will be removed.
 
 
 ## Example
 
 See nbmask-tests.ipynb in `extras`
 
-
 ## Installation
 
 You can install the current version of this package with pip
 
 ```console
-python -mpip install git+https://github.com/furechan/nbmask.git
+pip install nbmask
 ```
 
 ## Changelog
+
+### 0.0.4
+- Cell magic `%%masked` is no longer needed. Will be removed
 
 ### 0.0.3
 - Masking pattern is cached
