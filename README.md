@@ -54,8 +54,7 @@ logging.debug("Token is %s", TOKEN)
 
 ```
 
-To mask `print` or `pprint` outputs the extension include a `%%masked` cell magic
-but is is no longer and it will be removed.
+To mask `print` or `pprint` outputs the extension still includes a `%%masked` cell magic, but it is no longer needed and it will be removed.
 
 
 ## Example
