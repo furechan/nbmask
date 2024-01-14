@@ -1,10 +1,11 @@
 # IPython extension to mask sensitive data
 
 Simple ipython extension to mask the username or other sensitive data
-from notebook cell outputs.  It may be useful when printing
-or displaying sensitive information in public notebooks.
-The extension modifies the ipython display system to mask textual outputs
-from printing, logging and the native display system.
+from notebook cell outputs. This may be useful when printing or display
+sensitive information in public notebooks. The extension modifies the
+ipython display system to mask any occurence of one of the secrets strings
+in the textual outputs from printing, logging
+and the native display system.
 
 ## Usage
 
@@ -14,29 +15,22 @@ extension will mask the username.
 
 ```python
 import os
-import logging
-
 from pathlib import Path
-
-from IPython.display import display
-
-logging.basicConfig(level="DEBUG", force=True)
 
 %load_ext nbmask
 
 username = os.getenv('USER')
-
 print("My name is {username}!")
 # >>> My name is ...!
 
-documents = Path(f"/Users/{username}/Documents")
+documents = Path(f"~/Documents").expanduser()
 print(documents)
 # >>> PosixPath('/Users/.../Documents')
 ```
 
 
 You can add more secrets with the `%nbmask` magic line command
-using the ipython automatic `$name` variable expansion.
+and pass it any string parameter with the `$name` variable notation.
 
 
 ```python
@@ -48,13 +42,23 @@ credentials = dict(user=username, token=TOKEN)
 
 print(credentials)
 # >>> {'user': '...', 'token': '...'}
+```
+
+The extension applies to standard output, standard error and
+also the default logging handlers.
+
+```python
+import logging
+
+logging.basicConfig(level="DEBUG")
 
 logging.debug("Token is %s", TOKEN)
 # >>> DEBUG:root:Token is ...
-
 ```
 
-To mask `print` or `pprint` outputs the extension still includes a `%%masked` cell magic, but it is no longer needed and it will be removed.
+
+To mask `print` or `pprint` outputs the extension still includes a `%%masked` cell magic,
+but it is no longer needed and it will be removed.
 
 
 ## Example
