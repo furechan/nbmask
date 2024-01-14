@@ -24,7 +24,7 @@ print("My name is {username}!")
 # >>> My name is ...!
 
 documents = Path(f"~/Documents").expanduser()
-print(documents)
+documents
 # >>> PosixPath('/Users/.../Documents')
 ```
 
@@ -40,7 +40,7 @@ TOKEN = my_secret_token()
 
 credentials = dict(user=username, token=TOKEN)
 
-print(credentials)
+credentials
 # >>> {'user': '...', 'token': '...'}
 ```
 
