@@ -2,8 +2,8 @@
 
 Simple ipython extension to mask sensitive data like credentials from notebook cell outputs.
 This extensions may be useful to avoid inadvertently displaying sensitive data in public notebooks.
-The extension modifies the ipython display system to try and mask any occurence of any of the given strings
-that appear in textual outputs from printing, logging and the native display system.
+The extension modifies the ipython display system to try and mask any occurence of sensitive data
+that may appear in textual outputs from printing, logging and the native display system.
 
 ## Usage
 
