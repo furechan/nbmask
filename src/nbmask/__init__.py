@@ -56,13 +56,13 @@ def patch_publisher(publisher, *, verbose=False):
 
     publish = publisher.publish
 
-    def new_publish(data, metadata=None, source=None, **kwargs) -> None:
+    def new_publish(data, *args, **kwargs) -> None:
         if "text/plain" in data:
             text = data["text/plain"]
             text = masked_text(text)
             data["text/plain"] = text
 
-        publish(data, metadata, source, **kwargs)
+        publish(data, *args, **kwargs)
 
     publisher.publish = new_publish
 
@@ -76,7 +76,7 @@ def patch_display_hook(displayhook):
 
     write_format_data = displayhook.write_format_data
 
-    def new_write_format_data(format_dict, md_dict=None) -> None:
+    def new_write_format_data(format_dict, *args, **kwargs) -> None:
         """Write the format data dict to the frontend."""
 
         if "text/plain" in format_dict:
@@ -84,7 +84,7 @@ def patch_display_hook(displayhook):
             text = masked_text(text)
             format_dict["text/plain"] = text
 
-        write_format_data(format_dict, md_dict=md_dict)
+        write_format_data(format_dict, *args, **kwargs)
 
     displayhook.write_format_data = new_write_format_data
 
@@ -92,11 +92,11 @@ def patch_display_hook(displayhook):
 def patch_text_writer(stream):
     if not isinstance(stream, io.TextIOBase):
         warnings.warn(f"{stream} is not a TextIOBase!")
-        return stream
+        return 
 
-    if not inspect.ismethod(stream.write):
-        warnings.warn(f"{stream} write is not a method!")
-        return stream
+    if not inspect.isbuiltin(stream.write):
+        # warnings.warn(f"{stream} write is not a builtin!")
+        return
 
     write = stream.write
 
