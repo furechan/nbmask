@@ -1,17 +1,15 @@
 # IPython extension to mask sensitive data
 
-Simple ipython extension to mask the username or other sensitive data
-from notebook cell outputs. This may be useful when printing or display
-sensitive information in public notebooks. The extension modifies the
-ipython display system to mask any occurence of one of the secrets strings
-in the textual outputs from printing, logging
-and the native display system.
+Simple ipython extension to mask sensitive data like credentials from notebook cell outputs.
+This extensions may be useful to avoid inadvertently displaying sensitive data in public notebooks.
+The extension modifies the ipython display system to try and mask any occurence of any of the given strings
+that appear in textual outputs from printing, logging and the native display system.
 
 ## Usage
 
 To load the extension use the magic command `%load_ext nbmask`. The extension will automatically
-mask the notebook display textual outputs without any further magic commands. By default the
-extension will mask the username.
+mask the notebook display textual outputs without any further magic commands. When first loaded the
+extension will mask just the username.
 
 ```python
 import os
@@ -30,7 +28,7 @@ documents
 
 
 You can add more secrets with the `%nbmask` magic line command
-and pass it any string parameter with the `$name` variable notation.
+and a string parameter using python builtin variable expansion syntax.
 
 
 ```python
@@ -44,7 +42,7 @@ credentials
 # >>> {'user': '...', 'token': '...'}
 ```
 
-The extension applies to standard output, standard error and
+The extension modifies standard output, standard error and
 also the default logging handlers.
 
 ```python
@@ -55,11 +53,6 @@ logging.basicConfig(level="DEBUG")
 logging.debug("Token is %s", TOKEN)
 # >>> DEBUG:root:Token is ...
 ```
-
-
-To mask `print` or `pprint` outputs the extension still includes a `%%masked` cell magic,
-but it is no longer needed and it will be removed.
-
 
 ## Example
 
@@ -74,6 +67,11 @@ pip install nbmask
 ```
 
 ## Changelog
+
+### 0.05
+- Now using `uv_build` backend
+- Added testing with `pytest` and `nbmake`
+- Requires python >= 3.10 
 
 ### 0.0.4
 - Cell magic `%%masked` is no longer needed. Will be removed

@@ -1,4 +1,4 @@
-""" IPython extension to mask username from cell outputs """
+"""IPython extension to mask sensitive data from cell outputs"""
 
 import io
 import os
